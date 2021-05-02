@@ -12,18 +12,18 @@ import { createUrqlClient } from "../utils/ceateUrqlClient";
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
-  const router = useRouter()
-  const [,register] = useRegisterMutation();
+  const router = useRouter();
+  const [, register] = useRegisterMutation();
   return (
     <Wrapper variant={"small"}>
       <Formik
-        initialValues={{ username: "", password: "" }}
-        onSubmit={async (values,{setErrors}) => {
-          const response = await register(values)
-          if(response.data?.register.errors) {
-            setErrors(toErrorMap(response.data.register.errors))
+        initialValues={{ email: "", username: "", password: "" }}
+        onSubmit={async (values, { setErrors }) => {
+          const response = await register({ options: values });
+          if (response.data?.register.errors) {
+            setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
-            router.push('/');
+            router.push("/");
           }
         }}
       >
@@ -34,6 +34,14 @@ export const Register: React.FC<registerProps> = ({}) => {
               label="Username"
               placeholder="username"
             ></InputField>
+
+            <Box mt={4}>
+              <InputField
+                name="email"
+                label="Email"
+                placeholder="email"
+              ></InputField>
+            </Box>
 
             <Box mt={4}>
               <InputField
